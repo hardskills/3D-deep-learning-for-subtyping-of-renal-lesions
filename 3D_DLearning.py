@@ -79,8 +79,8 @@ train_transform = Compose([
     EnsureChannelFirstD(keys="image"),
     ScaleIntensityRangeD(
         keys="image",
-        a_min=-160,
-        a_max=240,
+        a_min=-230,
+        a_max=290,
         b_min=0.0,
         b_max=1.0,
         clip=True,
