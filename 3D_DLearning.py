@@ -12,8 +12,8 @@ from monai.transforms import Activations, AsDiscrete, LoadImageD, EnsureChannelF
 import random
 
 # Directory paths for training and validation data
-data_dir_train = r"D:\CTdata\MaskCrop\bg\V\Train"
-data_dir_valid = r"D:\CTdata\MaskCrop\bg\V\Validate"
+data_dir_train = r"D:\CTdata\MaskCrop\nb\A\Train"
+data_dir_valid = r"D:\CTdata\MaskCrop\nb\A\Validate"
 
 # train data
 class_names_train = sorted(x for x in os.listdir(data_dir_train) if os.path.isdir(os.path.join(data_dir_train, x)))
@@ -95,8 +95,8 @@ val_transform = Compose([
     EnsureChannelFirstD(keys="image"),
     ScaleIntensityRangeD(
         keys="image",
-        a_min=-160,
-        a_max=240,
+        a_min=-230,
+        a_max=290,
         b_min=0.0,
         b_max=1.0,
         clip=True,
@@ -190,12 +190,12 @@ def train(model, tra_loader, val_loader, loss_function, optimizer, num_epochs, b
     writer.close()
 
 # # Load pre-trained model and set device
-pretrain = torch.load(r"D:\PyProject\ReTumor\DLearning\MedicalNet_pytorch\pretrain\resnet_18_23dataset.pth")
+pretrain = torch.load(r"D:\PyProject\ReTumor\DLearning\MedicalNet_pytorch\pretrain\resnet_34_23dataset.pth")
 pretrain['state_dict'] = {k.replace("module.", ""):v for k, v in pretrain['state_dict'].items()}
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # # Initialize the model and load pre-trained weights
-model = resnet18(spatial_dims=3, n_input_channels=1, num_classes=num_class).to(device)
+model = resnet34(spatial_dims=3, n_input_channels=1, num_classes=num_class).to(device)
 model.load_state_dict(pretrain['state_dict'], strict=False)
 
 n_sum = num_each_train[0] + num_each_train[1] + num_each_train[2] + num_each_train[3] + num_each_train[4]
